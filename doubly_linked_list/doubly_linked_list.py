@@ -40,25 +40,55 @@ class DoublyLinkedList:
     self.tail = node
 
   def add_to_head(self, value):
-    pass
+    self.head.insert_before(value)
+    self.head = self.head.prev
 
   def remove_from_head(self):
-    pass
+    old_head = self.head.value
+    new_head = self.head.next
+    self.head.delete()
+    return old_head
 
   def add_to_tail(self, value):
-    pass
+    self.tail.insert_after(value)
+    self.tail = self.tail.next
+
 
   def remove_from_tail(self):
-    pass
+    new_tail = self.tail.prev 
+    old_tail = self.tail.value
+    self.tail.delete()
+    self.tail = new_tail
+    return old_tail
+
+  def find_node(self, node):
+    current_node = self.head
+    while current_node:
+      if current_node.value == node.value:
+        return current_node
+      else:
+        current_node = current_node.next
+    return None
 
   def move_to_front(self, node):
-    pass
+    matched_node = self.find_node(node)
+    self.add_to_head(matched_node.value)
+    matched_node.delete()
 
   def move_to_end(self, node):
-    pass
+    matched_node = self.find_node(node)
+    self.add_to_tail(matched_node.value)
+    matched_node.delete()
 
   def delete(self, node):
-    pass
+    matched_node = self.find_node(node)
+    matched_node.delete()
     
   def get_max(self):
-    pass
+    max = float('-inf')
+    current_node = self.head
+    while current_node:
+      if current_node.value > max:
+        max = current_node.value
+      current_node = current_node.next
+    return max
