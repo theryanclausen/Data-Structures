@@ -40,26 +40,46 @@ class DoublyLinkedList:
     self.tail = node
 
   def add_to_head(self, value):
-    self.head.insert_before(value)
-    self.head = self.head.prev
+    if self.head == None:
+      new_node = ListNode(value)
+      self.head = new_node
+      self.tail = new_node
+    else:
+      self.head.insert_before(value)
+      self.head = self.head.prev
 
   def remove_from_head(self):
-    old_head = self.head.value
-    new_head = self.head.next
-    self.head.delete()
-    return old_head
+    if self.head == None:
+      return None
+    old_head = self.head
+    if self.head == self.tail:
+      self.head = None
+      self.tail = None
+    else:
+      new_head = self.head.next
+      self.head.delete()
+    return old_head.value
 
   def add_to_tail(self, value):
-    self.tail.insert_after(value)
-    self.tail = self.tail.next
+    if not self.head:
+      new_node = ListNode(value)
+      self.head = new_node
+      self.tail = new_node
+    else:
+      self.tail.insert_after(value)
+      self.tail = self.tail.next
 
 
   def remove_from_tail(self):
-    new_tail = self.tail.prev 
-    old_tail = self.tail.value
-    self.tail.delete()
-    self.tail = new_tail
-    return old_tail
+    old_tail = self.tail
+    if self.tail == self.head:
+      self.head = None
+      self.tail = None
+    else:
+      new_tail = self.tail.prev 
+      self.tail.delete()
+      self.tail = new_tail
+    return old_tail.value
 
   def find_node(self, node):
     current_node = self.head
@@ -81,8 +101,17 @@ class DoublyLinkedList:
     matched_node.delete()
 
   def delete(self, node):
-    matched_node = self.find_node(node)
-    matched_node.delete()
+    if not self.head:
+      return
+    if self.head == self.tail:
+      self.head , self.tail = None, None
+    else:
+      matched_node = self.find_node(node)
+      if matched_node == self.head:
+        self.head = self.head.next
+      if matched_node == self.tail:
+        self.tail = self.tail.prev
+      matched_node.delete()
     
   def get_max(self):
     max = float('-inf')
